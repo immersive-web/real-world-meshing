@@ -1,0 +1,22 @@
+<pre class="metadata">
+Shortname: real-world-meshing
+Title: 
+Group: immersivewebwg
+Status: ED
+Level: 1
+ED: https://immersive-web.github.io/real-world-meshing/
+Repository: immersive-web/real-world-meshing
+Mailing List Archives: https://lists.w3.org/Archives/Public/public-immersive-web/
+
+!Participate: <a href="https://github.com/immersive-web/real-world-meshing/issues/new">File an issue</a> (<a href="https://github.com/immersive-web/real-world-meshing/issues">open issues</a>)
+!Participate: <a href="https://lists.w3.org/Archives/Public/public-immersive-web/">Mailing list archive</a>
+!Participate: <a href="irc://irc.w3.org:6665/">W3C's #immersive-web IRC</a>
+
+Editor: 
+Abstract:
+</pre>
+
+Introduction (#intro)
+============
+
+
