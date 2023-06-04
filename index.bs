@@ -138,7 +138,7 @@ In order for the applications to signal their interest in using mesh detection d
 
 A device is [=capable of supporting=] the mesh-detection feature if the device's tracking system exposes a [=native mesh detection=] capability. The [=inline XR device=] MUST NOT be treated as [=capable of supporting=] the mesh-detection feature.
 
-When a session is created with mesh-detection feature enabled, the [=update meshs=] algorithm MUST be added to the [=list of frame updates=] of that session.
+When a session is created with mesh-detection feature enabled, the [=update meshes=] algorithm MUST be added to the [=list of frame updates=] of that session.
 
 <div class="example">
 The following code demonstrates how a session that requires mesh detection could be requested:
@@ -151,7 +151,7 @@ const session = await navigator.xr.requestSession("immersive-ar", {
 
 </div>
 
-Meshs {#meshs-section}
+Meshs {#meshes-section}
 ======
 
 XRMesh {#mesh}
@@ -184,7 +184,7 @@ The {{XRMesh/lastChangedTime}} is the last time some of the mesh attributes have
 
 Note: The pose of a mesh is not considered a mesh attribute and therefore updates to mesh pose will not cause the {{XRMesh/lastChangedTime}} to change. This is because mesh pose is a property that is derived from two different entities - {{XRMesh/meshSpace}} and the {{XRSpace}} relative to which the pose is to be computed via {{XRFrame/getPose()}} function.
 
-Obtaining detected meshs {#obtaining-meshs}
+Obtaining detected meshes {#obtaining-meshes}
 =========================
 
 XRMeshSet {#mesh-set}
@@ -196,7 +196,7 @@ XRMeshSet {#mesh-set}
 };
 </script>
 
-An {{XRMeshSet}} is a collection of {{XRMesh}}s. It is the primary mechanism of obtaining the collection of meshs detected in an {{XRFrame}}.
+An {{XRMeshSet}} is a collection of {{XRMesh}}s. It is the primary mechanism of obtaining the collection of meshes detected in an {{XRFrame}}.
 
 <script type="idl">
 partial interface XRFrame {
@@ -204,22 +204,22 @@ partial interface XRFrame {
 };
 </script>
 
-{{XRFrame}} is extended to contain {{XRFrame/detectedMeshs}} attribute which contains all meshs that are still tracked in the frame. The set is initially empty and will be populated by the [=update meshs=] algorithm. If this attribute is accessed when the frame is not [=XRFrame/active=], the user agent MUST throw {{InvalidStateError}}.
+{{XRFrame}} is extended to contain {{XRFrame/detectedMeshs}} attribute which contains all meshes that are still tracked in the frame. The set is initially empty and will be populated by the [=update meshes=] algorithm. If this attribute is accessed when the frame is not [=XRFrame/active=], the user agent MUST throw {{InvalidStateError}}.
 
-{{XRSession}} is also extended to contain associated <dfn for=XRSession>set of tracked meshs</dfn>, which is initially empty. The elements of the set will be of {{XRMesh}} type.
+{{XRSession}} is also extended to contain associated <dfn for=XRSession>set of tracked meshes</dfn>, which is initially empty. The elements of the set will be of {{XRMesh}} type.
 
-<div class="algorithm" data-algorithm="update-meshs">
-In order to <dfn>update meshs</dfn> for |frame|, the user agent MUST run the following steps:
+<div class="algorithm" data-algorithm="update-meshes">
+In order to <dfn>update meshes</dfn> for |frame|, the user agent MUST run the following steps:
     1. Let |session| be a |frame|'s [=XRFrame/session=].
     1. Let |device| be a |session|'s [=XRSession/XR device=].
-    1. Let |trackedMeshs| be a result of calling into |device|'s [=native mesh detection=] capability to obtain tracked meshs at |frame|'s [=XRFrame/time=].
+    1. Let |trackedMeshs| be a result of calling into |device|'s [=native mesh detection=] capability to obtain tracked meshes at |frame|'s [=XRFrame/time=].
     1. For each |native mesh| in |trackedMeshs|, run:
         1. If desired, treat the |native mesh| as if it were not present in |trackedMeshs| and continue to the next entry. See [[#privacy-security]] for criteria that could be used to determine whether an entry should be ignored in this way.
-        1. If |session|'s [=XRSession/set of tracked meshs=] contains an object |mesh| that [=corresponds to=] |native mesh|, invoke [=update mesh object=] algorithm with |mesh|, |native mesh|, and |frame|, and continue to the next entry.
+        1. If |session|'s [=XRSession/set of tracked meshes=] contains an object |mesh| that [=corresponds to=] |native mesh|, invoke [=update mesh object=] algorithm with |mesh|, |native mesh|, and |frame|, and continue to the next entry.
         1. Let |mesh| be the result of invoking the [=create mesh object=] algorithm with |native mesh| and |frame|.
-        1. Add |mesh| to |session|'s [=XRSession/set of tracked meshs=].
-    1. Remove each object in |session|'s [=XRSession/set of tracked meshs=] that was neither created nor updated during the invocation of this algorithm.
-    1. Set |frame|'s {{XRFrame/detectedMeshs}} to [=XRSession/set of tracked meshs=].
+        1. Add |mesh| to |session|'s [=XRSession/set of tracked meshes=].
+    1. Remove each object in |session|'s [=XRSession/set of tracked meshes=] that was neither created nor updated during the invocation of this algorithm.
+    1. Set |frame|'s {{XRFrame/detectedMeshs}} to [=XRSession/set of tracked meshes=].
 </div>
 
 <div class="algorithm" data-algorithm="create-mesh-object">
@@ -250,11 +250,11 @@ Native mesh detection {#native-mesh-detection-section}
 
 <section class="non-normative">
 
-The mesh detection API provides information about 3D surfaces detected in users' environment. It is assumed in this specification that user agents can rely on <dfn>native mesh detection</dfn> capabilities provided by the underlying platform for their implementation of mesh-detection features. Specifically, the underlying XR device should provide a way to query all meshs that are tracked at a time that corresponds to the [=XRFrame/time=]of a specific {{XRFrame}}.
+The mesh detection API provides information about 3D surfaces detected in users' environment. It is assumed in this specification that user agents can rely on <dfn>native mesh detection</dfn> capabilities provided by the underlying platform for their implementation of mesh-detection features. Specifically, the underlying XR device should provide a way to query all meshes that are tracked at a time that corresponds to the [=XRFrame/time=]of a specific {{XRFrame}}.
 
-Moreover, it is assumed that the tracked meshs, known as <dfn>native mesh objects</dfn>, maintain their identity across frames - that is, given a mesh object <code>P</code> returned by the underlying system at time <code>t0</code>, and a mesh object <code>Q</code> returned by the underlying system at time <code>t1</code>, it is possible for the user agent to query the underlying system about whether <code>P</code> and <code>Q</code> correspond to the same logical mesh object. The underlying system is also expected to provide a [=native origin=] that can be used to query the location of a pose at time <code>t</code>, although it is not guaranteed that mesh pose will always be known (for example for meshs that are still tracked but not localizable at a given time). In addition, the native mesh object should expose a polygon describing approximate shape of the detected mesh.
+Moreover, it is assumed that the tracked meshes, known as <dfn>native mesh objects</dfn>, maintain their identity across frames - that is, given a mesh object <code>P</code> returned by the underlying system at time <code>t0</code>, and a mesh object <code>Q</code> returned by the underlying system at time <code>t1</code>, it is possible for the user agent to query the underlying system about whether <code>P</code> and <code>Q</code> correspond to the same logical mesh object. The underlying system is also expected to provide a [=native origin=] that can be used to query the location of a pose at time <code>t</code>, although it is not guaranteed that mesh pose will always be known (for example for meshes that are still tracked but not localizable at a given time). In addition, the native mesh object should expose a polygon describing approximate shape of the detected mesh.
 
-In addition, the underlying system should recognize native meshs as native entities for the purposes of {{XRAnchor}} creation. For more information, see [[webxr-anchors-module#native-anchor]] section.
+In addition, the underlying system should recognize native meshes as native entities for the purposes of {{XRAnchor}} creation. For more information, see [[webxr-anchors-module#native-anchor]] section.
 
 </section>
 
@@ -263,7 +263,7 @@ Privacy & Security Considerations {#privacy-security}
 
 <section class="non-normative">
 
-The mesh detection API exposes information about users' physical environment. The exposed mesh information (such as mesh's polygon) may be limited if the user agent so chooses. Some of the ways in which the user agent can reduce the exposed information are: decreasing the level of detail of the mesh's polygon in [=update mesh object=] algorithm (for example by decreasing the number of vertices, or by [=rounding=] / [=quantization|quantizing=] the coordinates of the vertices), or removing the mesh altogether by behaving as if the mesh object was not present in <code>trackedMeshs</code> collection in [=update meshs=] algorithm (this could be done for example if the detected mesh is deemed to small / too detailed to be surfaced and the mechanisms to reduce details exposed on meshs are not implemented by the user agent). The poses of the meshs (obtainable from {{XRMesh/meshSpace}}) could also be [=quantization|quantized=].
+The mesh detection API exposes information about users' physical environment. The exposed mesh information (such as mesh's polygon) may be limited if the user agent so chooses. Some of the ways in which the user agent can reduce the exposed information are: decreasing the level of detail of the mesh's polygon in [=update mesh object=] algorithm (for example by decreasing the number of vertices, or by [=rounding=] / [=quantization|quantizing=] the coordinates of the vertices), or removing the mesh altogether by behaving as if the mesh object was not present in <code>trackedMeshs</code> collection in [=update meshes=] algorithm (this could be done for example if the detected mesh is deemed to small / too detailed to be surfaced and the mechanisms to reduce details exposed on meshes are not implemented by the user agent). The poses of the meshes (obtainable from {{XRMesh/meshSpace}}) could also be [=quantization|quantized=].
 
 Since concepts from mesh detection API can be used in methods exposed by [[webxr-anchors-module]] specification, some of the privacy & security considerations that are relevant to WebXR Anchors Module also apply here. For details, see [[webxr-anchors-module#privacy-security]] section.
 
