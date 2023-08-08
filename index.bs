@@ -200,11 +200,11 @@ An {{XRMeshSet}} is a collection of {{XRMesh}}s. It is the primary mechanism of 
 
 <script type="idl">
 partial interface XRFrame {
-  readonly attribute XRMeshSet detectedMeshs;
+  readonly attribute XRMeshSet detectedMeshes;
 };
 </script>
 
-{{XRFrame}} is extended to contain {{XRFrame/detectedMeshs}} attribute which contains all meshes that are still tracked in the frame. The set is initially empty and will be populated by the [=update meshes=] algorithm. If this attribute is accessed when the frame is not [=XRFrame/active=], the user agent MUST throw {{InvalidStateError}}.
+{{XRFrame}} is extended to contain {{XRFrame/detectedMeshes}} attribute which contains all meshes that are still tracked in the frame. The set is initially empty and will be populated by the [=update meshes=] algorithm. If this attribute is accessed when the frame is not [=XRFrame/active=], the user agent MUST throw {{InvalidStateError}}.
 
 {{XRSession}} is also extended to contain associated <dfn for=XRSession>set of tracked meshes</dfn>, which is initially empty. The elements of the set will be of {{XRMesh}} type.
 
@@ -219,7 +219,7 @@ In order to <dfn>update meshes</dfn> for |frame|, the user agent MUST run the fo
         1. Let |mesh| be the result of invoking the [=create mesh object=] algorithm with |native mesh| and |frame|.
         1. Add |mesh| to |session|'s [=XRSession/set of tracked meshes=].
     1. Remove each object in |session|'s [=XRSession/set of tracked meshes=] that was neither created nor updated during the invocation of this algorithm.
-    1. Set |frame|'s {{XRFrame/detectedMeshs}} to [=XRSession/set of tracked meshes=].
+    1. Set |frame|'s {{XRFrame/detectedMeshes}} to [=XRSession/set of tracked meshes=].
 </div>
 
 <div class="algorithm" data-algorithm="create-mesh-object">
