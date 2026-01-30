@@ -151,7 +151,7 @@ const session = await navigator.xr.requestSession("immersive-ar", {
 
 </div>
 
-Meshs {#meshes-section}
+Meshes {#meshes-section}
 ======
 
 XRMesh {#mesh}
@@ -161,7 +161,7 @@ XRMesh {#mesh}
 [Exposed=Window] interface XRMesh {
     [SameObject] readonly attribute XRSpace meshSpace;
 
-    readonly attribute FrozenArray<Float32Array> vertices;
+    readonly attribute Float32Array vertices;
     readonly attribute Uint32Array indices;
     readonly attribute DOMHighResTimeStamp lastChangedTime;
     readonly attribute DOMString? semanticLabel;
